@@ -3,20 +3,23 @@
 ![Project Image](skel-banner.png)
 
 ## Install
-0. clone the bluez repo
+1. clone the bluez repo
 ```
 git clone https://github.com/pauloborges/bluez/tree/master
 ```
-0. install prerequisites for bluez
+   
+2. install prerequisites for bluez
 ```
 sudo apt-get update && sudo apt-get install gcc libglib2.0-dev dbus dbus-x11 udev libdbus-1-dev libdbus-glib-1-dev libudev-dev libical-dev libreadline-dev libjson-c-dev
 ```
-0. install latest version of `readline`, you should be able to find with `apt-cache search readline | grep readline`, example:
+   
+3. install latest version of `readline`, you should be able to find with `apt-cache search readline | grep readline`, example:
 ```
 sudo apt-get install libreadline8 libreadline8-dev
 ```
-0. apply patches to bluez:
-0. patch1 (reference: https://github.com/LibtraceTeam/libtrace/issues/117#issuecomment-1024508895):
+
+4. apply patches to bluez:
+5. patch1 (reference: https://github.com/LibtraceTeam/libtrace/issues/117#issuecomment-1024508895):
 ```
 diff --git a/profiles/audio/media.c b/profiles/audio/media.c
 index 9c72b8dc4..ee11da8ab 100644
@@ -42,7 +45,7 @@ index 9c72b8dc4..ee11da8ab 100644
  };
 ```
 
-0. patch2 (reference: https://patches.linaro.org/project/linux-bluetooth/patch/20210912204839.3018089-1-fontaine.fabrice@gmail.com/):
+6. patch2 (reference: https://patches.linaro.org/project/linux-bluetooth/patch/20210912204839.3018089-1-fontaine.fabrice@gmail.com/):
 ```
 diff --git a/tools/l2test.c b/tools/l2test.c
 index 125532b83..b0dd969c5 100644
@@ -72,7 +75,7 @@ index 77fa03c74..4dbfc79df 100644
  enum {
 ```
 
-0. patch 3:
+7. patch 3:
 ```
 diff --git a/obexd/client/sync.c b/obexd/client/sync.c
 index 1a4b482cf..a0855065a 100644
@@ -104,9 +107,9 @@ index 1a4b482cf..a0855065a 100644
 +       obc_driver_unregister(&sync2);
  }
 ```
-0. configure bluez and then install
+8. configure bluez and then install
 ```
 cd bluez && \
   ./configure --prefix=/usr --mandir=/usr/share/man --sysconfdir=/etc --localstatedir=/var && \
-  make && make install
+  make && sudo make install # sudo because /usr/bin/bluetoothctl
 ```
