@@ -15,9 +15,9 @@ sudo apt-get update && sudo apt-get install gcc libglib2.0-dev dbus dbus-x11 ude
 ```
 sudo apt-get install libreadline8 libreadline8-dev
 ```
-0. apply patches to bluez
+0. apply patches to bluez:
+0. patch1 (reference: https://github.com/LibtraceTeam/libtrace/issues/117#issuecomment-1024508895):
 ```
-patch1 (reference: https://github.com/LibtraceTeam/libtrace/issues/117#issuecomment-1024508895):
 diff --git a/profiles/audio/media.c b/profiles/audio/media.c
 index 9c72b8dc4..ee11da8ab 100644
 --- a/profiles/audio/media.c
@@ -40,8 +40,24 @@ index 9c72b8dc4..ee11da8ab 100644
         .next = next,
         .previous = previous,
  };
+```
 
-patch2 (reference: https://patches.linaro.org/project/linux-bluetooth/patch/20210912204839.3018089-1-fontaine.fabrice@gmail.com/):
+0. patch2 (reference: https://patches.linaro.org/project/linux-bluetooth/patch/20210912204839.3018089-1-fontaine.fabrice@gmail.com/):
+```
+diff --git a/tools/l2test.c b/tools/l2test.c
+index 125532b83..b0dd969c5 100644
+--- a/tools/l2test.c
++++ b/tools/l2test.c
+@@ -26,7 +26,7 @@
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+ #endif
+-
++#include <linux/sockios.h>
+ #include <stdio.h>
+ #include <errno.h>
+ #include <ctype.h>
+
 diff --git a/tools/rctest.c b/tools/rctest.c
 index 77fa03c74..4dbfc79df 100644
 --- a/tools/rctest.c
@@ -54,6 +70,39 @@ index 77fa03c74..4dbfc79df 100644
 
  /* Test modes */
  enum {
+```
+
+0. patch 3:
+```
+diff --git a/obexd/client/sync.c b/obexd/client/sync.c
+index 1a4b482cf..a0855065a 100644
+--- a/obexd/client/sync.c
++++ b/obexd/client/sync.c
+@@ -221,7 +221,7 @@ static void sync_remove(struct obc_session *session)
+        g_dbus_unregister_interface(conn, path, SYNC_INTERFACE);
+ }
+
+-static struct obc_driver sync = {
++static struct obc_driver sync2 = {
+        .service = "SYNC",
+        .uuid = SYNC_UUID,
+        .target = OBEX_SYNC_UUID,
+@@ -240,7 +240,7 @@ int sync_init(void)
+        if (!conn)
+                return -EIO;
+
+-       err = obc_driver_register(&sync);
++       err = obc_driver_register(&sync2);
+        if (err < 0) {
+                dbus_connection_unref(conn);
+                conn = NULL;
+@@ -257,5 +257,5 @@ void sync_exit(void)
+        dbus_connection_unref(conn);
+        conn = NULL;
+
+-       obc_driver_unregister(&sync);
++       obc_driver_unregister(&sync2);
+ }
 ```
 0. configure bluez and then install
 ```
