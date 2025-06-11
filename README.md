@@ -17,7 +17,7 @@ sudo apt-get install libreadline8 libreadline8-dev
 ```
 0. apply patches to bluez
 ```
-patch1:
+patch1 (reference: https://github.com/LibtraceTeam/libtrace/issues/117#issuecomment-1024508895):
 diff --git a/profiles/audio/media.c b/profiles/audio/media.c
 index 9c72b8dc4..ee11da8ab 100644
 --- a/profiles/audio/media.c
@@ -41,7 +41,7 @@ index 9c72b8dc4..ee11da8ab 100644
         .previous = previous,
  };
 
-patch2:
+patch2 (reference: https://patches.linaro.org/project/linux-bluetooth/patch/20210912204839.3018089-1-fontaine.fabrice@gmail.com/):
 diff --git a/tools/rctest.c b/tools/rctest.c
 index 77fa03c74..4dbfc79df 100644
 --- a/tools/rctest.c
